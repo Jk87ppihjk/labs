@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "ng build",
-    "start": "serve -s dist"
+    "start": "serve -l $PORT -s dist"
   },
   "dependencies": {
     "@angular/common": "^21.0.3",

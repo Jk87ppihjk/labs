@@ -1,4 +1,5 @@
 
+
 import '@angular/compiler';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter, withHashLocation } from '@angular/router';
@@ -15,6 +16,7 @@ bootstrapApplication(AppComponent, {
     provideRouter(APP_ROUTES, withHashLocation()),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor]))
   ]
-}).catch(err => console.error(err));
+}).then(() => console.log('Angular application bootstrapped successfully!'))
+  .catch(err => console.error('Angular bootstrap error:', err));
 
 // AI Studio always uses an `index.tsx` file for all project types.
