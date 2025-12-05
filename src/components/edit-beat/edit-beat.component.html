@@ -1,0 +1,94 @@
+
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-dark text-white font-display">
+    <!-- Top App Bar -->
+    <div class="sticky top-0 z-10 flex items-center bg-background-dark/80 p-4 pb-3 backdrop-blur-sm border-b border-surface-dark/50">
+        <button [routerLink]="['/beatmaker/beats']" class="text-white flex size-10 shrink-0 items-center justify-center -ml-2">
+            <span class="material-symbols-outlined text-3xl">arrow_back_ios_new</span>
+        </button>
+        <h1 class="text-white text-xl font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-8">{{ beatId() ? 'Editar Beat' : 'Novo Beat' }}</h1>
+        <button (click)="saveBeat()" class="flex items-center justify-end">
+            <p class="text-primary text-base font-bold leading-normal tracking-[0.015em] shrink-0">Salvar</p>
+        </button>
+    </div>
+
+    <form [formGroup]="beatForm" (ngSubmit)="saveBeat()" class="flex flex-col gap-4 p-4">
+        <!-- Header Image -->
+        <div class="relative w-full aspect-square bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden rounded-xl" [style.backgroundImage]="'url(' + artworkUrl() + ')'">
+            <div class="absolute inset-0 bg-black/30"></div>
+            <button type="button" class="absolute top-3 right-3 flex items-center gap-2 rounded-full bg-black/50 px-3 py-2 text-white text-sm backdrop-blur-sm">
+                <span class="material-symbols-outlined text-base">edit</span>
+                Editar
+            </button>
+        </div>
+        
+        <!-- Informações Gerais Section -->
+        <div class="flex flex-col gap-3">
+            <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pt-4">Informações Gerais</h2>
+            
+            <label class="flex flex-col w-full">
+                <p class="text-white/80 text-sm font-medium leading-normal pb-2">Título do Beat</p>
+                <input formControlName="title" class="form-input flex w-full rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-secondary border-none bg-surface-dark h-14 placeholder:text-white/40 p-4 text-base" placeholder="Ex: Sunset Vibes" />
+            </label>
+            
+            <label class="flex flex-col w-full">
+                <p class="text-white/80 text-sm font-medium leading-normal pb-2">Gênero Musical</p>
+                <select formControlName="genre" class="form-select flex w-full rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-secondary border-none bg-surface-dark h-14 p-4 text-base appearance-none bg-right-4 bg-no-repeat" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAXifT24dTRTuXZQouhMTSnGCjETyKbTku0zFS35-89MS6PzO7dnyNElNni1MtiBLvHQL97DrZXHuxLK9jEkXK4d1mrMqToKjkTl0cumn1ZewSG3FTa3YshtPUvPK7RaYKzbISyt5m8PDJ4r0RgDPjBOfWtSq7dB2NBBLCsccKV2gcszVcMjxWr-nYvdohcOBhKYLY6Q3MVy6V08Ge2KoOgSN5N8o9pSWHzs2aeolBKQiaOkX0FXpNmwmhqnv4Wk-16dKPs1hOf_vZw');">
+                    <option value="Trap">Trap</option>
+                    <option value="Lo-fi">Lo-fi</option>
+                    <option value="Hip Hop">Hip Hop</option>
+                    <option value="R&B">R&B</option>
+                </select>
+            </label>
+            
+            <label class="flex flex-col w-full">
+                <p class="text-white/80 text-sm font-medium leading-normal pb-2">Tags</p>
+                <div class="flex flex-wrap gap-2 rounded-lg bg-surface-dark p-3">
+                    @for (tag of tags.controls; track $index) {
+                        <div class="flex items-center gap-1.5 bg-primary/20 text-primary rounded-full px-3 py-1 text-sm font-medium">
+                            <span>{{ tag.value }}</span>
+                            <button type="button" (click)="removeTag($index)">
+                                <span class="material-symbols-outlined text-base cursor-pointer">close</span>
+                            </button>
+                        </div>
+                    }
+                    <input formControlName="newTag" (keydown.enter)="addTag($event)" class="form-input flex-1 bg-transparent text-white placeholder:text-white/40 border-none focus:ring-0 min-w-[100px]" placeholder="Adicionar tag..." />
+                </div>
+            </label>
+            
+            <label class="flex flex-col w-full">
+                <p class="text-white/80 text-sm font-medium leading-normal pb-2">Descrição</p>
+                <textarea formControlName="description" class="form-textarea flex w-full rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-secondary border-none bg-surface-dark h-32 placeholder:text-white/40 p-4 text-base" placeholder="Descreva seu beat..."></textarea>
+            </label>
+        </div>
+        
+        <!-- Licenças Section -->
+        <div formArrayName="licenses" class="flex flex-col gap-4">
+            <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pt-4">Configuração de Licenças</h2>
+            @for (license of licenses.controls; track $index) {
+                <div [formGroupName]="$index" class="rounded-xl bg-surface-dark p-4 flex flex-col gap-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-white font-bold text-base">{{ license.value.name }}</h3>
+                        <label class="switch"><input formControlName="active" type="checkbox" /><span class="slider"></span></label>
+                    </div>
+                    <div [class.opacity-50]="!license.value.active">
+                      <label class="flex flex-col w-full">
+                          <p class="text-white/80 text-sm font-medium leading-normal pb-2">Preço</p>
+                          <div class="relative">
+                              <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-white/60">R$</span>
+                              <input formControlName="price" class="form-input flex w-full rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-secondary border-none bg-background-dark h-14 placeholder:text-white/40 pl-10 p-4 text-base" placeholder="0,00" />
+                          </div>
+                      </label>
+                    </div>
+                </div>
+            }
+        </div>
+        
+        <!-- Final Actions -->
+        <div class="flex flex-col gap-4 pt-8 pb-4">
+            <button type="submit" class="w-full bg-primary text-white font-bold text-base rounded-xl h-14 flex items-center justify-center">Salvar Alterações</button>
+            @if (beatId()) {
+                <button type="button" (click)="deleteBeat()" class="w-full text-primary font-bold text-base rounded-xl h-14 flex items-center justify-center">Excluir Beat</button>
+            }
+        </div>
+    </form>
+</div>

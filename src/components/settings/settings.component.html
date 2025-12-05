@@ -1,0 +1,88 @@
+
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-dark text-white font-display">
+    <!-- Top App Bar -->
+    <div class="flex items-center px-4 py-3 sticky top-0 z-10 border-b border-white/10 bg-background-dark">
+        <button [routerLink]="['/profile']" class="flex size-10 items-center justify-center -ml-2">
+            <span class="material-symbols-outlined">arrow_back_ios_new</span>
+        </button>
+        <h1 class="flex-1 text-center text-lg font-bold tracking-tight">Configurações</h1>
+        <div class="size-10"></div>
+    </div>
+    <!-- Main Content -->
+    <main class="flex-1 px-4 pt-6 pb-8">
+        <!-- Account Section -->
+        <section class="mb-8">
+            <h2 class="px-4 pb-2 text-sm font-bold uppercase tracking-wider text-neutral-400">Conta</h2>
+            <div class="overflow-hidden rounded-xl bg-black/20">
+                @for (item of accountSettings; track item.name; let isLast = $last) {
+                    <a href="#" class="flex items-center gap-4 p-4 min-h-14 justify-between group">
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center justify-center rounded-lg bg-secondary/20 text-secondary shrink-0 size-10">
+                                <span class="material-symbols-outlined">{{ item.icon }}</span>
+                            </div>
+                            <p class="text-white text-base font-normal flex-1 truncate">{{ item.name }}</p>
+                        </div>
+                        <div class="shrink-0 text-neutral-500 group-hover:text-neutral-300 transition-colors">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </div>
+                    </a>
+                    @if (!isLast) {
+                        <hr class="border-t border-white/10 ml-18" />
+                    }
+                }
+            </div>
+        </section>
+        <!-- General Section -->
+        <section class="mb-8">
+            <h2 class="px-4 pb-2 text-sm font-bold uppercase tracking-wider text-neutral-400">Geral</h2>
+            <div class="overflow-hidden rounded-xl bg-black/20">
+                 @for (item of generalSettings; track item.name) {
+                    <a href="#" class="flex items-center gap-4 p-4 min-h-14 justify-between group">
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center justify-center rounded-lg bg-secondary/20 text-secondary shrink-0 size-10">
+                                <span class="material-symbols-outlined">{{ item.icon }}</span>
+                            </div>
+                            <p class="text-white text-base font-normal flex-1 truncate">{{ item.name }}</p>
+                        </div>
+                        <div class="shrink-0 flex items-center gap-2">
+                            <span class="text-neutral-400 text-base">{{ item.value }}</span>
+                            <div class="text-neutral-500 group-hover:text-neutral-300 transition-colors">
+                                <span class="material-symbols-outlined">chevron_right</span>
+                            </div>
+                        </div>
+                    </a>
+                 }
+            </div>
+        </section>
+        <!-- Legal Section -->
+        <section class="mb-8">
+            <h2 class="px-4 pb-2 text-sm font-bold uppercase tracking-wider text-neutral-400">Legal</h2>
+            <div class="overflow-hidden rounded-xl bg-black/20">
+                @for (item of legalSettings; track item.name; let isLast = $last) {
+                    <a href="#" class="flex items-center gap-4 p-4 min-h-14 justify-between group">
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center justify-center rounded-lg bg-secondary/20 text-secondary shrink-0 size-10">
+                                <span class="material-symbols-outlined">{{ item.icon }}</span>
+                            </div>
+                            <p class="text-white text-base font-normal flex-1 truncate">{{ item.name }}</p>
+                        </div>
+                        <div class="shrink-0 text-neutral-500 group-hover:text-neutral-300 transition-colors">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </div>
+                    </a>
+                    @if (!isLast) {
+                        <hr class="border-t border-white/10 ml-18" />
+                    }
+                }
+            </div>
+        </section>
+        <!-- Logout Action -->
+        <section>
+            <div class="overflow-hidden rounded-xl bg-black/20">
+                <button [routerLink]="['/welcome']" class="w-full flex items-center gap-4 p-4 min-h-14 justify-center group">
+                    <p class="text-primary text-base font-bold leading-normal">Sair</p>
+                </button>
+            </div>
+        </section>
+    </main>
+</div>

@@ -1,0 +1,73 @@
+
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-dark text-white">
+    <!-- Top App Bar & Search (Sticky) -->
+    <div class="sticky top-0 z-10 bg-background-dark/80 backdrop-blur-sm">
+        <div class="flex items-center p-4 pb-2 justify-between">
+            <h1 class="text-3xl font-bold flex-1">Explorar</h1>
+            <div class="flex w-12 items-center justify-end">
+                <button [routerLink]="['/profile']" class="flex cursor-pointer items-center justify-center rounded-full h-12 bg-transparent text-white min-w-0 p-0">
+                    <span class="material-symbols-outlined text-3xl">account_circle</span>
+                </button>
+            </div>
+        </div>
+        <div class="px-4 py-3">
+            <div class="flex w-full flex-1 items-stretch rounded-xl h-12 bg-zinc-800">
+                <div class="text-zinc-400 flex items-center justify-center pl-4 rounded-l-xl">
+                    <span class="material-symbols-outlined">search</span>
+                </div>
+                <input class="form-input flex w-full min-w-0 flex-1 bg-transparent text-white focus:outline-0 focus:ring-0 border-none h-full placeholder:text-zinc-400 px-2 text-base font-normal leading-normal" placeholder="Buscar por beat, gênero, beatmaker..." />
+            </div>
+        </div>
+        <div class="flex gap-3 px-4 pb-4 overflow-x-auto">
+            <button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary pl-4 pr-4">
+                <span class="material-symbols-outlined text-white text-lg">tune</span>
+                <p class="text-white text-sm font-medium leading-normal">Filtros</p>
+            </button>
+            @for (genre of ['Hip-Hop', 'Trap', 'R&B', 'Lo-Fi', 'Pop']; track genre) {
+                <button class="flex h-10 shrink-0 items-center justify-center rounded-full bg-zinc-800 pl-4 pr-4">
+                    <p class="text-white text-sm font-medium leading-normal">{{ genre }}</p>
+                </button>
+            }
+        </div>
+        <div class="h-px bg-zinc-800"></div>
+    </div>
+
+    <!-- Beat Feed -->
+    <div class="flex flex-col">
+        @for (beat of beats(); track beat.id) {
+            <div class="p-4 @container">
+                <div class="flex flex-col items-stretch justify-start rounded-xl overflow-hidden bg-zinc-900">
+                    <div class="relative w-full bg-center bg-no-repeat aspect-square bg-cover" [style.background-image]="'url(' + beat.artworkUrl + ')'">
+                        <button class="absolute bottom-4 right-4 flex items-center justify-center size-14 rounded-full bg-primary/90 backdrop-blur-sm text-white shadow-lg">
+                            <span class="material-symbols-outlined text-4xl">play_arrow</span>
+                        </button>
+                    </div>
+                    <div class="flex w-full flex-col items-stretch justify-center gap-4 p-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="text-white text-xl font-bold leading-tight">{{ beat.title }}</p>
+                                <p class="text-zinc-400 text-base font-normal leading-normal">{{ beat.producer }}</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button class="text-zinc-400"><span class="material-symbols-outlined">favorite</span></button>
+                                <button class="text-zinc-400"><span class="material-symbols-outlined">add_shopping_cart</span></button>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            @for (license of beat.licenses; track license.type) {
+                                <button (click)="selectLicense(beat, license.type)"
+                                    class="inline-block whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-semibold transition-colors"
+                                    [class.bg-secondary/20]="license.selected"
+                                    [class.text-secondary]="license.selected"
+                                    [class.bg-zinc-800]="!license.selected"
+                                    [class.text-zinc-300]="!license.selected">
+                                    {{ license.type }} R${{ license.price }}
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

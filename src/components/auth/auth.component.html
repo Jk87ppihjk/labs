@@ -1,0 +1,80 @@
+
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-dark overflow-x-hidden text-white">
+    <div class="flex flex-col justify-center items-center px-4 pt-12">
+        <h1 class="tracking-light text-3xl font-bold leading-tight text-center pb-8">BeatMarket</h1>
+    </div>
+
+    <div class="px-4 py-3">
+        <div class="flex h-12 flex-1 items-center justify-center rounded-xl bg-black/20 p-1">
+            <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 text-sm font-medium leading-normal transition-colors"
+                [class.bg-zinc-900]="authMode() === 'register'"
+                [class.shadow-sm]="authMode() === 'register'"
+                [class.text-white]="authMode() === 'register'"
+                [class.text-zinc-400]="authMode() !== 'register'">
+                <span class="truncate">Criar Conta</span>
+                <input (change)="toggleMode('register')" checked name="auth-toggle" type="radio" value="register" class="invisible w-0"/>
+            </label>
+            <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 text-sm font-medium leading-normal transition-colors"
+                [class.bg-zinc-900]="authMode() === 'login'"
+                [class.shadow-sm]="authMode() === 'login'"
+                [class.text-white]="authMode() === 'login'"
+                [class.text-zinc-400]="authMode() !== 'login'">
+                <span class="truncate">Entrar</span>
+                <input (change)="toggleMode('login')" name="auth-toggle" type="radio" value="login" class="invisible w-0"/>
+            </label>
+        </div>
+    </div>
+
+    <form (ngSubmit)="submitForm()" class="flex flex-col gap-4 px-4 py-3">
+        @if (authMode() === 'register') {
+            <label class="flex flex-col flex-1">
+                <p class="text-base font-medium leading-normal pb-2">Nome Completo</p>
+                <input [(ngModel)]="fullName" name="fullName" class="form-input flex w-full min-w-0 flex-1 rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border-zinc-700 bg-zinc-800 h-14 placeholder:text-zinc-400 p-4 text-base font-normal leading-normal" placeholder="Insira seu nome completo" />
+            </label>
+        }
+        <label class="flex flex-col flex-1">
+            <p class="text-base font-medium leading-normal pb-2">Email</p>
+            <input [(ngModel)]="email" name="email" class="form-input flex w-full min-w-0 flex-1 rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border-zinc-700 bg-zinc-800 h-14 placeholder:text-zinc-400 p-4 text-base font-normal leading-normal" placeholder="Insira seu email" type="email" />
+        </label>
+        <label class="flex flex-col flex-1">
+            <p class="text-base font-medium leading-normal pb-2">Senha</p>
+            <div class="flex w-full flex-1 items-stretch rounded-lg bg-zinc-800 border border-zinc-700 focus-within:ring-2 focus-within:ring-primary/50">
+                <input [(ngModel)]="password" name="password" class="form-input flex w-full min-w-0 flex-1 bg-transparent text-white focus:outline-0 focus:ring-0 border-none h-14 placeholder:text-zinc-400 p-4 pr-2 text-base font-normal leading-normal" placeholder="Insira sua senha" type="password" />
+                <button type="button" aria-label="Mostrar senha" class="text-zinc-400 flex items-center justify-center px-4">
+                    <span class="material-symbols-outlined text-2xl">visibility</span>
+                </button>
+            </div>
+        </label>
+        
+        <div class="px-4 py-2">
+            <a class="text-primary text-sm font-medium text-right block hover:underline" href="#">Esqueceu sua senha?</a>
+        </div>
+
+        <div class="py-4 flex flex-col gap-4">
+            <button type="submit" class="flex items-center justify-center w-full bg-primary text-white font-bold h-14 rounded-lg text-base">
+                {{ authMode() === 'register' ? 'Criar Conta' : 'Entrar' }}
+            </button>
+        </div>
+    </form>
+
+    @if (authMode() === 'register') {
+        <div class="px-4 py-2">
+            <p class="text-xs text-zinc-400 text-center leading-relaxed">
+                Ao criar uma conta, você concorda com nossos <a class="font-semibold text-primary hover:underline" href="#">Termos de Serviço</a> e <a class="font-semibold text-primary hover:underline" href="#">Política de Privacidade</a>.
+            </p>
+        </div>
+    }
+
+    <div class="flex items-center gap-4 px-4 py-6">
+        <hr class="flex-grow border-t border-zinc-700"/>
+        <span class="text-sm font-medium text-zinc-400">OU</span>
+        <hr class="flex-grow border-t border-zinc-700"/>
+    </div>
+
+    <div class="px-4 py-2 flex flex-col gap-4 pb-12">
+        <button class="flex items-center justify-center w-full bg-white text-black font-bold h-14 rounded-lg text-base gap-3 border border-transparent">
+            <img alt="Google logo" class="h-6 w-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1d7UnWR3Lsy7Ptd17O4IWhHhLhOELBnmt-7yx0igfQcJ4wbs2fdX9MFG51qsDv3h5LhI0tMkT5bgHtm4zgkLY4TsT6fflfQNL3PjhunznsRMlRjI_fIlbulI1MsAMAd3WezsiiNB7nzEqWvfzIYmIKDz-ux5mlpd-06hCNZNLhGTUhCtkjp0n-w88f3d44bO381Xth5fbH6FG8vrblwAPIq7bppaS-S1GJh82UiOsFYYtBLZCKyvGzEzj5PzEz5T0z-cUzvsaKFDf"/>
+            Continue com o Google
+        </button>
+    </div>
+</div>

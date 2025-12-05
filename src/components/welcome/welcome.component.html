@@ -1,0 +1,54 @@
+
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-dark font-display text-white">
+    <div class="flex flex-col items-center p-6 text-center">
+        <span class="material-symbols-outlined text-secondary text-5xl mb-2">equalizer</span>
+        <h1 class="tracking-tight text-[36px] font-bold leading-tight">Sua Batida Perfeita</h1>
+        <p class="text-white/80 text-base font-normal leading-normal mt-2 max-w-md">O marketplace definitivo para comprar e vender os melhores beats do mercado.</p>
+    </div>
+    <div class="relative flex-shrink-0 px-4">
+        <img alt="Ilustração de um beatmaker criando música em seu estúdio com um sampler e fones de ouvido" class="mx-auto w-full max-w-sm h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzuWA1s1uoJ0cbcTFxYObiYQJeVaJvyd5_MI0Bw4ab-hH8noN7pgAtqulHEKU5la-Aqoj9cnPtgBDTtaLROHCytCxy748YOPqBssx6CxBwNaYhpKinDutLzVgZiibL3hdYCgOw96cRYmRIOm907Av3LT05ob6G-9rwjLa-N2zlN_fOiJjwglRnAV1SQ0x5jiPmGwS_5NupLKDf9hGHi-dAee41cTmh9yEikRjPgr1x396rOy-6f6YpyZN_kMgizpy7I-_V_8BM07VW" />
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4">
+        <div class="flex flex-1 gap-3 rounded-lg border border-white/10 bg-white/[.03] p-4 flex-col items-center text-center">
+            <div class="text-secondary">
+                <span class="material-symbols-outlined">license</span>
+            </div>
+            <div class="flex flex-col gap-1">
+                <h2 class="text-white text-base font-bold leading-tight">Licenças Flexíveis</h2>
+                <p class="text-white/60 text-sm font-normal leading-normal">Opções Basic, Premium e Pro</p>
+            </div>
+        </div>
+        <div class="flex flex-1 gap-3 rounded-lg border border-white/10 bg-white/[.03] p-4 flex-col items-center text-center">
+            <div class="text-secondary">
+                <span class="material-symbols-outlined">upload_file</span>
+            </div>
+            <div class="flex flex-col gap-1">
+                <h2 class="text-white text-base font-bold leading-tight">Venda Seus Beats</h2>
+                <p class="text-white/60 text-sm font-normal leading-normal">Monetize seu talento</p>
+            </div>
+        </div>
+        <div class="flex flex-1 gap-3 rounded-lg border border-white/10 bg-white/[.03] p-4 flex-col items-center text-center">
+            <div class="text-secondary">
+                <span class="material-symbols-outlined">groups</span>
+            </div>
+            <div class="flex flex-col gap-1">
+                <h2 class="text-white text-base font-bold leading-tight">Comunidade Vibrante</h2>
+                <p class="text-white/60 text-sm font-normal leading-normal">Conecte-se com artistas</p>
+            </div>
+        </div>
+    </div>
+    <div class="flex-grow"></div>
+    <div class="flex justify-center mt-4">
+        <div class="flex w-full flex-1 gap-4 max-w-[480px] flex-col items-stretch px-4 py-3">
+            <a [routerLink]="['/auth', 'beatmaker']" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-5 bg-primary text-white text-lg font-bold leading-normal tracking-wide w-full">
+                <span class="truncate">Sou Beatmaker</span>
+            </a>
+            <a [routerLink]="['/auth', 'buyer']" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-5 bg-secondary text-black text-lg font-bold leading-normal tracking-wide w-full">
+                <span class="truncate">Busco um Beat</span>
+            </a>
+        </div>
+    </div>
+    <div class="text-center py-4 px-4">
+        <a class="text-white/70 text-sm font-normal hover:text-white" [routerLink]="['/auth', 'buyer']">Já tem uma conta? <span class="font-bold text-secondary">Entrar</span></a>
+    </div>
+</div>

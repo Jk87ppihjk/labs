@@ -1,0 +1,62 @@
+
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden bg-background-dark text-white">
+    <!-- Top App Bar -->
+    <div class="flex items-center p-4 pb-2 justify-between sticky top-0 z-10 bg-background-dark">
+        <button [routerLink]="['/beatmaker/dashboard']" class="flex size-12 shrink-0 items-center justify-start -ml-3">
+            <span class="material-symbols-outlined text-2xl">arrow_back_ios_new</span>
+        </button>
+        <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Meus Beats</h2>
+        <div class="flex size-12 shrink-0"></div>
+    </div>
+    <!-- Search Bar -->
+    <div class="px-4 py-3">
+        <div class="flex w-full items-stretch rounded-xl h-12 bg-zinc-800">
+            <div class="text-zinc-400 flex items-center justify-center pl-4">
+                <span class="material-symbols-outlined text-2xl">search</span>
+            </div>
+            <input class="form-input flex w-full bg-transparent text-white focus:outline-0 focus:ring-0 border-none h-full placeholder:text-zinc-400 pl-2 text-base" placeholder="Buscar por nome..." />
+        </div>
+    </div>
+    <!-- Chips / Filters -->
+    <div class="flex gap-3 px-4 py-2 overflow-x-auto">
+        @for (filter of filters; track filter) {
+            <button (click)="setFilter(filter)" class="flex h-8 shrink-0 items-center justify-center rounded-full px-4" [class.bg-primary/20]="activeFilter() === filter" [class.text-primary]="activeFilter() === filter" [class.bg-zinc-800]="activeFilter() !== filter" [class.text-white]="activeFilter() !== filter">
+                <p class="text-sm font-medium leading-normal">{{ filter }}</p>
+            </button>
+        }
+    </div>
+    <!-- List Items -->
+    <div class="flex flex-col gap-2 p-4 pb-24">
+        @for (beat of beats(); track beat.id) {
+            <div class="flex gap-4 bg-zinc-900/50 p-3 rounded-xl justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-[70px]" [style.backgroundImage]="'url(' + beat.artworkUrl + ')'"></div>
+                    <div class="flex flex-1 flex-col justify-center gap-1">
+                        <p class="text-white text-base font-medium leading-normal">{{ beat.title }}</p>
+                        <div class="flex items-center gap-4 text-zinc-400">
+                            <div class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                                <p class="text-xs font-normal leading-normal">{{ beat.sales }}</p>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-base">visibility</span>
+                                <p class="text-xs font-normal leading-normal">{{ beat.views }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <div class="size-2 rounded-full" [class.bg-green-500]="beat.status === 'Ativo'" [class.bg-zinc-500]="beat.status !== 'Ativo'"></div>
+                            <p class="text-xs font-medium leading-normal" [class.text-green-500]="beat.status === 'Ativo'" [class.text-zinc-500]="beat.status !== 'Ativo'">{{ beat.status }}</p>
+                        </div>
+                    </div>
+                </div>
+                <button [routerLink]="['/beatmaker/beats/edit', beat.id]" class="shrink-0 text-white flex size-7 items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl">more_vert</span>
+                </button>
+            </div>
+        }
+    </div>
+    <!-- Floating Action Button -->
+    <button [routerLink]="['/beatmaker/beats/new']" class="fixed bottom-6 right-6 flex h-14 w-14 items-center justify-center rounded-full bg-primary shadow-lg text-white">
+        <span class="material-symbols-outlined text-4xl">add</span>
+    </button>
+</div>

@@ -1,0 +1,103 @@
+
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden bg-background-dark font-display text-white">
+    <!-- Top App Bar -->
+    <div class="flex items-center p-4 pb-2 justify-between sticky top-0 z-10 bg-background-dark">
+        <div [routerLink]="['/profile']" class="flex size-12 shrink-0 items-center justify-start cursor-pointer">
+            <span class="material-symbols-outlined">account_circle</span>
+        </div>
+        <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Dashboard</h2>
+        <div class="flex w-12 items-center justify-end">
+            <button [routerLink]="['/settings']" class="flex h-12 items-center justify-center p-0">
+                <span class="material-symbols-outlined">settings</span>
+            </button>
+        </div>
+    </div>
+    @if (dashboardData(); as data) {
+        <h1 class="tracking-light text-[32px] font-bold leading-tight px-4 text-left pb-3 pt-4">Olá, Beatmaker!</h1>
+        <!-- Stats -->
+        <div class="flex flex-wrap gap-4 p-4">
+            <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl bg-surface-dark p-4">
+                <p class="text-text-secondary-dark text-base font-medium leading-normal">Total Sales</p>
+                <p class="tracking-light text-2xl font-bold leading-tight">{{ data.stats.totalSales.value }}</p>
+                <p class="text-green-500 text-sm font-medium leading-normal">{{ data.stats.totalSales.trend }}</p>
+            </div>
+            <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl bg-surface-dark p-4">
+                <p class="text-text-secondary-dark text-base font-medium leading-normal">Streams/Plays</p>
+                <p class="tracking-light text-2xl font-bold leading-tight">{{ data.stats.streams.value }}</p>
+                <p class="text-green-500 text-sm font-medium leading-normal">{{ data.stats.streams.trend }}</p>
+            </div>
+            <div class="flex min-w-full flex-1 flex-col gap-2 rounded-xl bg-surface-dark p-4">
+                <p class="text-text-secondary-dark text-base font-medium leading-normal">Profile Views</p>
+                <p class="tracking-light text-2xl font-bold leading-tight">{{ data.stats.profileViews.value }}</p>
+                <p class="text-green-500 text-sm font-medium leading-normal">{{ data.stats.profileViews.trend }}</p>
+            </div>
+        </div>
+
+        <!-- Section Header: Performance -->
+        <h3 class="text-xl font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Performance</h3>
+        
+        <!-- Segmented Buttons -->
+        <div class="flex px-4 py-3">
+            <div class="flex h-10 flex-1 items-center justify-center rounded-lg bg-surface-dark p-1">
+                @for (period of ['7 dias', '30 dias', '90 dias']; track period) {
+                    <button (click)="setPeriod(period)" class="flex h-full grow items-center justify-center rounded-md px-2 text-sm font-medium leading-normal transition-colors" [class.bg-primary]="activePeriod() === period" [class.text-white]="activePeriod() === period" [class.text-text-secondary-dark]="activePeriod() !== period">
+                        <span class="truncate">{{ period }}</span>
+                    </button>
+                }
+            </div>
+        </div>
+        
+        <!-- Performance Chart -->
+        <div class="px-4 py-2">
+            <div class="flex h-48 w-full items-end justify-center rounded-xl bg-surface-dark p-4">
+                <img [src]="data.performanceChartUrl" alt="Performance chart" class="h-full w-full object-contain" />
+            </div>
+        </div>
+
+        <!-- Section Header: Top Beats -->
+        <h3 class="text-xl font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-6">Top Beats</h3>
+        
+        <!-- Top Beats List -->
+        <div class="flex flex-col gap-3 px-4">
+            @for (beat of data.topBeats; track beat.id) {
+                <div class="flex items-center gap-4 rounded-xl bg-surface-dark p-3">
+                    <img [src]="beat.artworkUrl" alt="Beat thumbnail" class="h-14 w-14 shrink-0 rounded-lg object-cover" />
+                    <div class="flex-1">
+                        <p class="font-semibold">{{ beat.title }}</p>
+                        <p class="text-sm text-text-secondary-dark">{{ beat.metric }}</p>
+                    </div>
+                    <span class="material-symbols-outlined" [class.text-secondary]="beat.icon === 'military_tech'" [class.text-text-secondary-dark]="beat.icon !== 'military_tech'">{{ beat.icon }}</span>
+                </div>
+            }
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-2 gap-4 p-4 pt-8">
+            <button [routerLink]="['/beatmaker/beats/new']" class="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-primary text-white font-bold">
+                <span class="material-symbols-outlined">upload</span>
+                Upload Beat
+            </button>
+            <button [routerLink]="['/beatmaker/beats']" class="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-surface-dark text-white font-bold">
+                <span class="material-symbols-outlined">edit_note</span>
+                Manage Beats
+            </button>
+        </div>
+    } @else {
+        <p class="text-center p-8">Loading dashboard...</p>
+    }
+
+
+    <div class="h-24"></div> <!-- Spacer for bottom nav -->
+
+    <!-- Bottom Navigation Bar -->
+    <div class="fixed bottom-0 left-0 right-0 border-t border-surface-dark bg-background-dark/80 backdrop-blur-sm">
+        <div class="flex h-20 justify-around items-start pt-2">
+            @for (item of navItems(); track item.label) {
+                <a [routerLink]="item.path" (click)="setActiveNav(item.label)" class="flex flex-col items-center gap-1" [class.text-primary]="item.active" [class.text-text-secondary-dark]="!item.active">
+                    <span class="material-symbols-outlined" [style.font-variation-settings]="item.active ? '\'FILL\' 1' : '\'FILL\' 0'">{{ item.icon }}</span>
+                    <span class="text-xs font-medium">{{ item.label }}</span>
+                </a>
+            }
+        </div>
+    </div>
+</div>

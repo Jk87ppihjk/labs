@@ -1,0 +1,85 @@
+
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-dark text-white font-display">
+    @if (profile(); as user) {
+        <!-- Top App Bar -->
+        <div class="flex items-center p-4 pb-2 justify-between sticky top-0 z-10 bg-background-dark">
+            <button [routerLink]="['/beatmaker/dashboard']" class="flex size-10 shrink-0 items-center justify-start -ml-2">
+                <span class="material-symbols-outlined text-2xl">arrow_back_ios</span>
+            </button>
+            <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Perfil</h2>
+            <div class="flex w-10 items-center justify-end shrink-0">
+                <a [routerLink]="['/welcome']" class="text-primary text-base font-bold leading-normal tracking-[0.015em] shrink-0">Sair</a>
+            </div>
+        </div>
+
+        <!-- Profile Header -->
+        <div class="flex p-4">
+            <div class="flex w-full flex-col gap-4 items-center">
+                <div class="flex gap-4 flex-col items-center">
+                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full min-h-32 w-32 border-2 border-primary" [style.backgroundImage]="'url(' + user.avatarUrl + ')'"></div>
+                    <div class="flex flex-col items-center justify-center">
+                        <p class="text-[22px] font-bold leading-tight tracking-[-0.015em] text-center">{{ user.name }}</p>
+                        <p class="text-text-secondary-dark text-base font-normal leading-normal text-center">{{ user.handle }}</p>
+                    </div>
+                </div>
+                <button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] w-full max-w-[480px]">
+                    <span class="truncate">Editar Perfil</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bio -->
+        <div class="px-4 pb-4">
+            <p class="text-text-secondary-dark text-base font-normal leading-normal text-center">{{ user.bio }}</p>
+        </div>
+
+        <!-- Social Links Bar -->
+        <div class="px-4 pb-6">
+            <div class="gap-2 grid-cols-[repeat(auto-fit,_minmax(80px,_1fr))] grid">
+                @for (social of ['Instagram', 'Youtube', 'Spotify', 'Soundcloud']; track social; let i = $index) {
+                    <div class="flex flex-col items-center gap-2 text-center">
+                        <div class="rounded-full bg-surface-dark p-3">
+                            <span class="material-symbols-outlined text-secondary">{{ ['photo_camera', 'smart_display', 'music_note', 'graphic_eq'][i] }}</span>
+                        </div>
+                        <p class="text-white text-sm font-medium leading-normal">{{ social }}</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="flex flex-wrap gap-4 p-4">
+            <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-surface-dark">
+                <p class="text-text-secondary-dark text-base font-medium leading-normal">Beats Vendidos</p>
+                <p class="tracking-light text-2xl font-bold leading-tight">{{ user.stats.sold }}</p>
+            </div>
+            <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-surface-dark">
+                <p class="text-text-secondary-dark text-base font-medium leading-normal">Licenças Ativas</p>
+                <p class="tracking-light text-2xl font-bold leading-tight">{{ user.stats.licenses }}</p>
+            </div>
+            <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-4 bg-surface-dark">
+                <p class="text-text-secondary-dark text-base font-medium leading-normal">Seguidores</p>
+                <p class="tracking-light text-2xl font-bold leading-tight">{{ user.stats.followers }}</p>
+            </div>
+        </div>
+        
+        <!-- Menu List -->
+        <div class="flex flex-col gap-2 p-4">
+            @for (item of [['Histórico de Compras', 'receipt_long'], ['Redefinir Senha', 'lock_reset'], ['Configurações', 'settings']]; track item[0]) {
+                 <a [routerLink]="item[0] === 'Configurações' ? ['/settings'] : []" class="flex items-center gap-4 bg-surface-dark px-4 min-h-14 justify-between rounded-lg">
+                    <div class="flex items-center gap-4">
+                        <div class="text-secondary flex items-center justify-center shrink-0 size-10">
+                            <span class="material-symbols-outlined text-2xl">{{ item[1] }}</span>
+                        </div>
+                        <p class="text-white text-base font-normal leading-normal flex-1 truncate">{{ item[0] }}</p>
+                    </div>
+                    <div class="shrink-0 text-text-secondary-dark flex size-7 items-center justify-center">
+                        <span class="material-symbols-outlined text-2xl">chevron_right</span>
+                    </div>
+                </a>
+            }
+        </div>
+    } @else {
+        <p class="text-center p-8">Loading profile...</p>
+    }
+</div>
