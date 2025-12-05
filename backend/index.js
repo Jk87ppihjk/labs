@@ -4,11 +4,9 @@ const cors = require('cors');
 
 const app = express();
 
-const corsOptions = {
-  origin: process.env.FRONTEND_URL
-};
+// Allow all origins
+app.use(cors());
 
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

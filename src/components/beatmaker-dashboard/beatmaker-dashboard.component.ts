@@ -1,7 +1,7 @@
-
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-beatmaker-dashboard',
@@ -12,8 +12,11 @@ import { ApiService } from '../../services/api.service';
 })
 export class BeatmakerDashboardComponent {
   private apiService = inject(ApiService);
-  dashboardData = signal<any>(null);
+  private authService = inject(AuthService);
+
   activePeriod = signal('30 dias');
+  profile = signal<any>(null);
+  topBeats = signal<any[]>([]);
 
   navItems = signal([
     { icon: 'dashboard', label: 'Dashboard', path: '/beatmaker/dashboard', active: true },
@@ -23,9 +26,8 @@ export class BeatmakerDashboardComponent {
   ]);
   
   constructor() {
-    this.apiService.getBeatmakerDashboard().subscribe(data => {
-      this.dashboardData.set(data);
-    });
+    this.apiService.getProfile().subscribe(data => this.profile.set(data));
+    this.apiService.getMyBeats().subscribe(data => this.topBeats.set(data.slice(0, 3))); // Show top 3 for now
   }
 
   setPeriod(period: string) {

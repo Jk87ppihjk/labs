@@ -1,4 +1,3 @@
-
 <div class="relative flex h-auto min-h-screen w-full flex-col bg-background-dark overflow-x-hidden text-white">
     <div class="flex flex-col justify-center items-center px-4 pt-12">
         <h1 class="tracking-light text-3xl font-bold leading-tight text-center pb-8">BeatMarket</h1>
@@ -29,17 +28,17 @@
         @if (authMode() === 'register') {
             <label class="flex flex-col flex-1">
                 <p class="text-base font-medium leading-normal pb-2">Nome Completo</p>
-                <input [(ngModel)]="fullName" name="fullName" class="form-input flex w-full min-w-0 flex-1 rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border-zinc-700 bg-zinc-800 h-14 placeholder:text-zinc-400 p-4 text-base font-normal leading-normal" placeholder="Insira seu nome completo" />
+                <input [(ngModel)]="fullName" name="fullName" class="form-input flex w-full min-w-0 flex-1 rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border-zinc-700 bg-zinc-800 h-14 placeholder:text-zinc-400 p-4 text-base font-normal leading-normal" placeholder="Insira seu nome completo" required />
             </label>
         }
         <label class="flex flex-col flex-1">
             <p class="text-base font-medium leading-normal pb-2">Email</p>
-            <input [(ngModel)]="email" name="email" class="form-input flex w-full min-w-0 flex-1 rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border-zinc-700 bg-zinc-800 h-14 placeholder:text-zinc-400 p-4 text-base font-normal leading-normal" placeholder="Insira seu email" type="email" />
+            <input [(ngModel)]="email" name="email" class="form-input flex w-full min-w-0 flex-1 rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border-zinc-700 bg-zinc-800 h-14 placeholder:text-zinc-400 p-4 text-base font-normal leading-normal" placeholder="Insira seu email" type="email" required />
         </label>
         <label class="flex flex-col flex-1">
             <p class="text-base font-medium leading-normal pb-2">Senha</p>
             <div class="flex w-full flex-1 items-stretch rounded-lg bg-zinc-800 border border-zinc-700 focus-within:ring-2 focus-within:ring-primary/50">
-                <input [(ngModel)]="password" name="password" class="form-input flex w-full min-w-0 flex-1 bg-transparent text-white focus:outline-0 focus:ring-0 border-none h-14 placeholder:text-zinc-400 p-4 pr-2 text-base font-normal leading-normal" placeholder="Insira sua senha" type="password" />
+                <input [(ngModel)]="password" name="password" class="form-input flex w-full min-w-0 flex-1 bg-transparent text-white focus:outline-0 focus:ring-0 border-none h-14 placeholder:text-zinc-400 p-4 pr-2 text-base font-normal leading-normal" placeholder="Insira sua senha" type="password" required />
                 <button type="button" aria-label="Mostrar senha" class="text-zinc-400 flex items-center justify-center px-4">
                     <span class="material-symbols-outlined text-2xl">visibility</span>
                 </button>
@@ -49,10 +48,20 @@
         <div class="px-4 py-2">
             <a class="text-primary text-sm font-medium text-right block hover:underline" href="#">Esqueceu sua senha?</a>
         </div>
+        
+        @if (errorMessage()) {
+          <div class="text-red-500 text-sm text-center bg-red-500/10 p-3 rounded-lg">
+            {{ errorMessage() }}
+          </div>
+        }
 
         <div class="py-4 flex flex-col gap-4">
-            <button type="submit" class="flex items-center justify-center w-full bg-primary text-white font-bold h-14 rounded-lg text-base">
-                {{ authMode() === 'register' ? 'Criar Conta' : 'Entrar' }}
+            <button type="submit" [disabled]="loading()" class="flex items-center justify-center w-full bg-primary text-white font-bold h-14 rounded-lg text-base disabled:opacity-50">
+                @if (loading()) {
+                    <span class="h-5 w-5 border-4 border-t-transparent border-white rounded-full animate-spin"></span>
+                } @else {
+                   <span>{{ authMode() === 'register' ? 'Criar Conta' : 'Entrar' }}</span>
+                }
             </button>
         </div>
     </form>

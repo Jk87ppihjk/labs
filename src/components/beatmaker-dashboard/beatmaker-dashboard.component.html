@@ -1,4 +1,3 @@
-
 <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden bg-background-dark font-display text-white">
     <!-- Top App Bar -->
     <div class="flex items-center p-4 pb-2 justify-between sticky top-0 z-10 bg-background-dark">
@@ -12,24 +11,24 @@
             </button>
         </div>
     </div>
-    @if (dashboardData(); as data) {
-        <h1 class="tracking-light text-[32px] font-bold leading-tight px-4 text-left pb-3 pt-4">Olá, Beatmaker!</h1>
+    @if (profile(); as user) {
+        <h1 class="tracking-light text-[32px] font-bold leading-tight px-4 text-left pb-3 pt-4">Olá, {{ user.full_name.split(' ')[0] }}!</h1>
         <!-- Stats -->
         <div class="flex flex-wrap gap-4 p-4">
             <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl bg-surface-dark p-4">
                 <p class="text-text-secondary-dark text-base font-medium leading-normal">Total Sales</p>
-                <p class="tracking-light text-2xl font-bold leading-tight">{{ data.stats.totalSales.value }}</p>
-                <p class="text-green-500 text-sm font-medium leading-normal">{{ data.stats.totalSales.trend }}</p>
+                <p class="tracking-light text-2xl font-bold leading-tight">R$ 0</p>
+                <p class="text-green-500 text-sm font-medium leading-normal">+0.0%</p>
             </div>
             <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl bg-surface-dark p-4">
                 <p class="text-text-secondary-dark text-base font-medium leading-normal">Streams/Plays</p>
-                <p class="tracking-light text-2xl font-bold leading-tight">{{ data.stats.streams.value }}</p>
-                <p class="text-green-500 text-sm font-medium leading-normal">{{ data.stats.streams.trend }}</p>
+                <p class="tracking-light text-2xl font-bold leading-tight">0</p>
+                <p class="text-green-500 text-sm font-medium leading-normal">+0.0%</p>
             </div>
             <div class="flex min-w-full flex-1 flex-col gap-2 rounded-xl bg-surface-dark p-4">
                 <p class="text-text-secondary-dark text-base font-medium leading-normal">Profile Views</p>
-                <p class="tracking-light text-2xl font-bold leading-tight">{{ data.stats.profileViews.value }}</p>
-                <p class="text-green-500 text-sm font-medium leading-normal">{{ data.stats.profileViews.trend }}</p>
+                <p class="tracking-light text-2xl font-bold leading-tight">0</p>
+                <p class="text-green-500 text-sm font-medium leading-normal">+0.0%</p>
             </div>
         </div>
 
@@ -50,23 +49,23 @@
         <!-- Performance Chart -->
         <div class="px-4 py-2">
             <div class="flex h-48 w-full items-end justify-center rounded-xl bg-surface-dark p-4">
-                <img [src]="data.performanceChartUrl" alt="Performance chart" class="h-full w-full object-contain" />
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGgfr49oFfKmiMXx3HgR7JxzG5efwgLeXRWId-Qas8NZLHaiMZFEc0HCI_oGuhBf9QwMewoM6TgobghMwNarval4y68NnL6mTrVbcC4XK65BfQ5tIYmj-cboEmo9bCB37PEUn8X8AgNPnCAA1e4wDopSpX-OIRwo864XZP_KnOia-a1BjjygxfW0obfsk1F0_JzCX48kVVRaQtA29YnhJtEanuUTldA_g9X9JAlY0xuNomlBxb06GjLlo5NVu6mUV5NlbKcI0L-hZV" alt="Performance chart" class="h-full w-full object-contain" />
             </div>
         </div>
 
         <!-- Section Header: Top Beats -->
-        <h3 class="text-xl font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-6">Top Beats</h3>
+        <h3 class="text-xl font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-6">Meus Beats Recentes</h3>
         
         <!-- Top Beats List -->
         <div class="flex flex-col gap-3 px-4">
-            @for (beat of data.topBeats; track beat.id) {
+            @for (beat of topBeats(); track beat.id) {
                 <div class="flex items-center gap-4 rounded-xl bg-surface-dark p-3">
                     <img [src]="beat.artworkUrl" alt="Beat thumbnail" class="h-14 w-14 shrink-0 rounded-lg object-cover" />
                     <div class="flex-1">
                         <p class="font-semibold">{{ beat.title }}</p>
-                        <p class="text-sm text-text-secondary-dark">{{ beat.metric }}</p>
+                        <p class="text-sm text-text-secondary-dark">{{ beat.views }} plays</p>
                     </div>
-                    <span class="material-symbols-outlined" [class.text-secondary]="beat.icon === 'military_tech'" [class.text-text-secondary-dark]="beat.icon !== 'military_tech'">{{ beat.icon }}</span>
+                    <span class="material-symbols-outlined text-text-secondary-dark">trending_up</span>
                 </div>
             }
         </div>

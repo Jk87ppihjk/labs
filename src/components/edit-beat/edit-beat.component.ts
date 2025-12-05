@@ -1,7 +1,6 @@
-
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 
 @Component({
@@ -49,15 +48,6 @@ export class EditBeatComponent {
     return this.beatForm.get('licenses') as FormArray;
   }
 
-  licenseControls(index: number) {
-    return (this.licenses.at(index) as FormGroup).controls;
-  }
-
-  isLicenseFileIncluded(licenseIndex: number, fileName: string): boolean {
-    const files = this.licenses.at(licenseIndex).get('files')?.value as string[];
-    return files.includes(fileName);
-  }
-
   loadBeatData(id: number) {
     this.apiService.getBeatForEdit(id).subscribe(data => {
       this.artworkUrl.set(data.artworkUrl);
@@ -67,15 +57,16 @@ export class EditBeatComponent {
         description: data.description,
       });
 
-      data.tags.forEach(tag => this.tags.push(this.fb.control(tag)));
+      this.tags.clear();
+      data.tags.forEach((tag: string) => this.tags.push(this.fb.control(tag)));
       
       this.licenses.clear();
-      data.licenses.forEach(license => {
+      data.licenses.forEach((license: any) => {
         this.licenses.push(this.fb.group({
           name: [license.name],
           active: [license.active],
           price: [license.price, Validators.required],
-          files: this.fb.control(license.files)
+          files: this.fb.control(license.files || [])
         }));
       });
     });
@@ -100,11 +91,14 @@ export class EditBeatComponent {
 
   addTag(event: Event) {
     const input = event.target as HTMLInputElement;
-    const tag = input.value.trim();
-    if (tag) {
-      this.tags.push(this.fb.control(tag));
-      this.beatForm.get('newTag')?.setValue('');
+    if (input && input.value) {
+      const tag = input.value.trim();
+      if (tag && !this.tags.value.includes(tag)) {
+        this.tags.push(this.fb.control(tag));
+      }
+      input.value = '';
     }
+    event.preventDefault();
   }
 
   removeTag(index: number) {
@@ -112,14 +106,28 @@ export class EditBeatComponent {
   }
 
   saveBeat() {
-    console.log('Saving beat:', this.beatForm.value);
-    this.router.navigate(['/beatmaker/beats']);
+    if (this.beatForm.invalid) {
+        return;
+    }
+    const beatData = {
+        ...this.beatForm.value,
+        id: this.beatId(),
+        tags: this.tags.value,
+        artworkUrl: this.artworkUrl()
+    };
+    
+    this.apiService.saveBeat(beatData).subscribe({
+      next: () => this.router.navigate(['/beatmaker/beats']),
+      error: (err) => console.error('Failed to save beat', err)
+    });
   }
   
   deleteBeat() {
-    if (confirm('Are you sure you want to delete this beat?')) {
-        console.log('Deleting beat:', this.beatId());
-        this.router.navigate(['/beatmaker/beats']);
+    if (this.beatId() && confirm('Tem certeza que deseja excluir este beat?')) {
+        this.apiService.deleteBeat(this.beatId()!).subscribe({
+          next: () => this.router.navigate(['/beatmaker/beats']),
+          error: (err) => console.error('Failed to delete beat', err)
+        });
     }
   }
 }
